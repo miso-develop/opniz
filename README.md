@@ -19,8 +19,6 @@ M5ATOMクラスで**M5Stack、M5StickC、M5ATOM Lite、M5ATOM Matrixでの動作
 
 ## Node.js SDK
 
-アルファ版をGitHubにて公開しています。  
-
 **[opniz-sdk-nodejs](https://github.com/miso-develop/opniz-sdk-nodejs)**
 
 デバイスのRead/Writeを実行したり（Pinも動的に指定可能です）、デバイス側からのイベント（たとえばM5Stack系デバイスのボタン等）を受け取って非同期に処理を実行したりできます。  
@@ -29,14 +27,26 @@ M5ATOMクラスで**M5Stack、M5StickC、M5ATOM Lite、M5ATOM Matrixでの動作
 
 ## Arduinoライブラリ
 
-アルファ版をGitHubにて公開しています。  
-現在M5ATOM向けとESP32向けのライブラリをそれぞれ公開しています。  
-
 **[opniz-arduino-m5atom](https://github.com/miso-develop/opniz-arduino-m5atom)**  
 **[opniz-arduino-esp32](https://github.com/miso-develop/opniz-arduino-esp32)**  
 
 Node.js SDKからのRPCリクエストを処理するハンドラと、ESP32デバイスからのRPCイベントを発火するエミッタを実装したデバイスクラスを提供します。  
 Arduino IDEおよびPlatformIOに対応しています。  
+現在M5ATOM向けとESP32向けのライブラリをそれぞれ公開しています。  
+
+
+
+## opniz Server
+
+**[opniz-server](https://github.com/miso-develop/opniz-server)**
+
+opniz Serverはopniz Node.js SDKやopnizデバイスからのJSON RPCメッセージを中継するWebSocketサーバです。  
+opniz Serverを介すことでWebSocketクライアント同士の接続（opnizデバイス、ブラウザ、Node.js SDK等）を行えます。  
+
+クラウド環境（PaaS、FaaS等）でも動作するため、たとえば手元のPCで動作させたopniz Node.js SDKからインターネット越しの環境にあるopnizデバイスを制御するといったことも可能です。  
+
+![opniz-server](./extras/images/opniz-server.png)
+
 
 
 ## 実装状況
