@@ -1,38 +1,62 @@
 # opniz
 
-![logo](./extras/images/logo.png)
+<div align="center"><img src="https://user-images.githubusercontent.com/22117028/274112294-10c9323f-14d3-4986-ac3e-c73c16b87f4b.png" alt="logo"></div>
 
-`❗ このプロジェクトは現在アルファ版です。`
+> ❗ このプロジェクトは現在アルファ版です。
 
-opnizとはM5StackといったESP32デバイスをNode.jsからobnizライクに遠隔制御するための、**Node.js SDK**および**Arduinoライブラリ**です。  
-しくみとしてはESP32デバイスおよびNode.js SDK間にて**JSON形式のRPCメッセージ**をやりとりし、相互に定義されたメソッドを呼び合います。  
+opnizとはM5StackデバイスをNode.js（JavaScript / TypeScript）からobnizライクに実装できるオープンソースフレームワークです。  
+Node.js SDKおよびArduinoライブラリがあり、WebSocketで相互通信を行います。  
 
-![overview](./extras/images/overview.png)
+しくみとしてはM5StackデバイスおよびNode.js SDK間にてJSON形式のRPCメッセージをやりとりし、相互に定義されたメソッドを呼び合います。  
 
-現在Node.js SDK、Arduinoライブラリともに**ESP32**および**M5ATOM**クラスを実装しています。  
-M5ATOMクラスで**M5Stack、M5StickC、M5ATOM Lite、M5ATOM Matrixでの動作を確認しています。**  
+![overview](https://user-images.githubusercontent.com/22117028/274111780-1f1e22ec-66ac-4cd0-bee3-1a19ee2eb65c.png)
 
-新たなデバイスクラスや独自のメソッドを簡単に拡張できる設計となっています。  
-また**クラウド環境（PaaS、FaaS等）でも動作**させることができます。  
+
+
+## 対応デバイス
+
+* M5Stack BASIC
+* M5Stack Core2
+* M5StickC
+* M5ATOM Matrix
+* M5ATOM Lite
+* M5ATOM Echo
+* M5ATOM U
+* M5ATOMS3
+* M5ATOMS3 Lite
+* M5Stamp Pico
+* M5Stamp S3
+* その他ESP32、ESP32-PICO-D4、ESP32-S3デバイス
 
 
 
 ## Node.js SDK
 
-**[opniz-sdk-nodejs](https://github.com/miso-develop/opniz-sdk-nodejs)**
+**[opniz SDK for Node.js](https://github.com/miso-develop/opniz-sdk-nodejs)**
 
 デバイスのRead/Writeを実行したり（Pinも動的に指定可能です）、デバイス側からのイベント（たとえばM5Stack系デバイスのボタン等）を受け取って非同期に処理を実行したりできます。  
+[M5Unified](https://github.com/m5stack/M5Unified)をベースにM5Stackデバイス固有のメソッドも備えています。  
 
 
 
 ## Arduinoライブラリ
 
-**[opniz-arduino-m5atom](https://github.com/miso-develop/opniz-arduino-m5atom)**  
-**[opniz-arduino-esp32](https://github.com/miso-develop/opniz-arduino-esp32)**  
+**[opniz Arduino Library for M5Unified](https://github.com/miso-develop/opniz-arduino-m5unified)**  
 
-Node.js SDKからのRPCリクエストを処理するハンドラと、ESP32デバイスからのRPCイベントを発火するエミッタを実装したデバイスクラスを提供します。  
+Node.js SDKからのRPCリクエストを処理するハンドラと、M5StackデバイスからのRPCイベントを発火するエミッタを実装したデバイスクラスを提供します。  
 Arduino IDEおよびPlatformIOに対応しています。  
-現在M5ATOM向けとESP32向けのライブラリをそれぞれ公開しています。  
+[M5Unified](https://github.com/m5stack/M5Unified)を内部で使用しており、Node.js SDKより同じ書き味でメソッドを使用できます。  
+
+opniz CLIにて簡単にM5Stackデバイスへ書き込むことができます。  
+
+
+
+## opniz CLI
+
+**[opniz CLI](https://github.com/miso-develop/opniz-cli)**
+
+opniz CLIはM5Stackデバイスへopniz ArduinoライブラリのBasicスケッチをコマンドから簡単に書き込めるCLIツールです。  
+[Arduino CLI](https://github.com/arduino/arduino-cli)のラッパーCLIです。  
 
 
 
@@ -45,24 +69,7 @@ opniz Serverを介すことでWebSocketクライアント同士の接続（opniz
 
 クラウド環境（PaaS、FaaS等）でも動作するため、たとえば手元のPCで動作させたopniz Node.js SDKからインターネット越しの環境にあるopnizデバイスを制御するといったことも可能です。  
 
-![opniz-server](./extras/images/opniz-server.png)
-
-
-
-## 実装状況
-
-現在M5ATOM、ESP32クラスを実装しています。  
-これらのクラスはそれぞれ対応するArduinoライブラリを模しています。  
-これらのクラスを継承して簡単に新たなデバイスクラスを拡張できる設計となっています。  
-
-ESP32クラスを継承したM5ATOMクラスの実装を参照すると拡張のヒントになると思います。  
-
-たとえば[Node.js SDKのM5ATOMクラス](https://github.com/miso-develop/opniz-sdk-nodejs/blob/main/src/devices/M5Atom.ts)ではLEDを制御する`dis.drawpix`メソッドと、デバイスのボタンを押したときの`onbutton`メソッドを実装しています。  
-これらメソッドはそれぞれ、デバイスに対する命令と、デバイスからのイベント処理の実装です。  
-opnizの拡張はこの2種類の動作を定義していくだけです。  
-
-[ArduinoライブラリのM5ATOMクラス](https://github.com/miso-develop/opniz-arduino-m5atom/blob/main/src/opniz/M5Atom.cpp)では、Node.js SDKからの制御メッセージを受け取るハンドラと、デバイスのボタンを押したときにNode.js SDKへイベントを発火するエミッタをそれぞれ実装しています。  
-必要に応じて同様にハンドラ、エミッタを継承実装することで拡張が行えます。  
+![opniz-server](https://user-images.githubusercontent.com/22117028/274111777-8f17b07d-380e-4f9f-8064-06fa9eb8cbde.png)
 
 
 
